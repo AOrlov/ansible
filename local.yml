@@ -6,4 +6,5 @@
   # pre_tasks:
     # Install homebrew
   tasks:
+    - import_tasks: tasks/install-oh-my-zsh.yml
     - import_tasks: tasks/dotfiles.yml
