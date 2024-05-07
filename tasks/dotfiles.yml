@@ -1,0 +1,28 @@
+- name: Installing stow
+  homebrew:
+    name: 'stow'
+    state: latest
+  tags:
+    - install
+    - dotfiles
+    - stow
+- name: Cloning .dotfiles
+  ansible.builtin.git:
+    repo: 'git@github.com:AOrlov/.dotfiles.git'
+    dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    recursive: yes
+    update: yes
+    accept_hostkey: yes
+    version: master
+  tags:
+    - install
+    - dotfiles
+    - stow
+- name: Ensure files are 0755
+  command: find {{ lookup('env', 'HOME') }}/.dotfiles -type f -exec chmod 0755 {} \;
+- name: Stow dotfiles
+  shell: cd $HOME/.dotfiles && ./macos
+  tags:
+    - install
+    - dotfiles
+    - stow
