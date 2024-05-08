@@ -7,5 +7,5 @@
     # Install homebrew
   tasks:
     - import_tasks: tasks/install-oh-my-zsh.yml
-    - import_tasks: tasks/dotfiles.yml
     - import_tasks: tasks/tmux.yml
+    - import_tasks: tasks/dotfiles.yml

@@ -21,6 +21,10 @@
     - stow
 - name: Ensure files are 0755
   command: find {{ lookup('env', 'HOME') }}/.dotfiles -type f -exec chmod 0755 {} \;
+  tags:
+    - install
+    - dotfiles
+    - stow
 - name: Stow dotfiles
   shell: cd $HOME/.dotfiles && ./macos
   tags:
