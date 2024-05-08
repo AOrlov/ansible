@@ -1,0 +1,27 @@
+- name: Check that the somefile.conf exists
+  stat:
+    path: ~/.oh-my-tmux
+  register: oh_my_tmux_stats
+  tags: &tags_for_tmux_tasks [ 'install', 'productivity', 'dotfiles', 'tmux' ]
+
+- name: Installing Tmux
+  homebrew:
+    name: 'tmux'
+    state: latest
+  tags: *tags_for_tmux_tasks
+  when: oh_my_tmux_stats.stat.exists == False
+
+- name: Installing Oh-My-Tmux
+  ansible.builtin.git:
+      repo: 'https://github.com/gpakosz/.tmux.git'
+      dest: "{{ lookup('env', 'HOME') }}/.tmux"
+      update: yes
+      force: yes
+      recursive: yes
+  tags: *tags_for_tmux_tasks
+  when: oh_my_tmux_stats.stat.exists == False
+
+- name: Configuring Oh-My-Tmux
+  shell: cd ~ && ln -s -f .tmux/.tmux.conf && cp -rf .tmux/.tmux.conf.local .
+  tags: *tags_for_tmux_tasks
+  when: oh_my_tmux_stats.stat.exists == False
